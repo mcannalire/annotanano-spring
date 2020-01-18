@@ -2,6 +2,8 @@ package com.annotanano;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ public class AnnotananoApiApplication {
 	}
 	
 	@GetMapping
-	public String login() {
+	public ResponseEntity<String> login() {
 		/*MongoClientURI uri = new MongoClientURI(
 			    "mongodb+srv://lokad90:mongodb@cluster0-biuot.mongodb.net/test?retryWrites=true&w=majority");
 			
@@ -33,7 +35,7 @@ public class AnnotananoApiApplication {
 		
 		
 		//return "LOGIN EFFETTUATO MARCO, nome database mongo: " + database.getName();
-		return "0000";
+		return new ResponseEntity<String>("0000", HttpStatus.OK);
 	}
 
 	public static void main(String[] args) {
