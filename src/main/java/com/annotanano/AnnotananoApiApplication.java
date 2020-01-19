@@ -107,8 +107,7 @@ public class AnnotananoApiApplication {
 				}
 				
 				update.append("gamesThisYear", userGames.getGamesThisYear());
-				Document dupdate = new Document();
-				dupdate.append("$set", update);
+				Bson dupdate = new Document("$set", update);
 				collection.updateOne(query, dupdate);
 			}
 			
