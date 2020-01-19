@@ -109,7 +109,17 @@ public class AnnotananoApiApplication {
 					}
 				}
 				
-				update.append("gamesThisYear", userGames.getGamesThisYear());
+				List<Document> documentListGames = new ArrayList<Document>();
+				for (Game game : userGames.getGamesThisYear()) {
+					Document gameDocument = new Document();
+					gameDocument.append("id", game.getId());
+					gameDocument.append("name", game.getName());
+					gameDocument.append("percentComp", game.getPercentComp());
+					gameDocument.append("platform", game.getPlatform());
+					documentListGames.add(gameDocument);
+				}
+				
+				update.append("gamesThisYear", documentListGames);
 				Bson dupdate = new Document("$set", update);
 				collection.updateOne(query, dupdate);
 			}
