@@ -6,6 +6,7 @@ public class Game {
 	private String platform;
 	private boolean completato;
 	private String percentComp;
+	private String id;
 	
 	public String getName() {
 		return name;
@@ -30,6 +31,12 @@ public class Game {
 	}
 	public void setPercentComp(String percentComp) {
 		this.percentComp = percentComp;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

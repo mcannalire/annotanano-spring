@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,19 @@ public class AnnotananoApiApplication {
 		return user;
 	}
 	
+	@PutMapping
+	public User update(@RequestBody UserGames userGames) {
+		
+		MongoDatabase db = getMongoDb();
+		
+		MongoCollection<Document> collection = db.getCollection("gamers");
+		Bson condition = new Document("$eq", userGames.getUserId());
+		Bson filter = new Document("userId", condition);
+		
+		Document document = collection.find(filter).first();
+		return null;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@GetMapping("/getAll")
 	public List<UserGames> getAll() {
@@ -78,6 +92,7 @@ public class AnnotananoApiApplication {
 	            	game.setName(d.getString("name"));
 	            	game.setPercentComp(d.getString("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
+	            	game.setId(d.getObjectId("id").toString());
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
