@@ -53,6 +53,7 @@ public class AnnotananoApiApplication {
 	
 	@SuppressWarnings("deprecation")
 	@GetMapping("/getAll")
+	@CrossOrigin(origins = "*")
 	public List<UserGames> getAll() {
 		MongoDatabase db = getMongoDb();
 		MongoCollection<Document> collection = db.getCollection("gamers");
