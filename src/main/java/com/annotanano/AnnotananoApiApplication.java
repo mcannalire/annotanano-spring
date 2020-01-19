@@ -38,7 +38,8 @@ public class AnnotananoApiApplication {
 	public User login(@RequestBody UserCredential uCred) {
 		User user = new User();
 		
-		MongoDatabase db = getMongoDb();
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
 		
 		MongoCollection<Document> collection = db.getCollection("users");
 		Bson condition = new Document("$eq", uCred.getUserName());
@@ -54,14 +55,16 @@ public class AnnotananoApiApplication {
 		} else {
 			user.setUserId("NA");
 		}
-		
+		mongoClient.close();
 		return user;
 	}
 	
 	@SuppressWarnings("deprecation")
 	@PostMapping("/getUserGames")
 	public UserGames getUserGames(@RequestBody String userId) {
-		MongoDatabase db = getMongoDb();
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
+		
 		MongoCollection<Document> collection = db.getCollection("gamers");
 		
 		Bson condition = new Document("$eq", userId);
@@ -85,14 +88,15 @@ public class AnnotananoApiApplication {
         });
         user.setGamesThisYear(userGames);
 	        
-	   
+        mongoClient.close();
 		return user;
 	}
 	
 	@PutMapping
 	public UserGames update(@RequestBody UserGames userGames) {
 		
-		MongoDatabase db = getMongoDb();
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
 		
 		MongoCollection<Document> collection = db.getCollection("gamers");
 		Bson condition = new Document("$eq", userGames.getUserId());
@@ -161,13 +165,15 @@ public class AnnotananoApiApplication {
 			
 		}
 		
+		mongoClient.close();
 		return userGames;
 	}
 	
 	@SuppressWarnings("deprecation")
 	@GetMapping("/getAll")
 	public List<UserGames> getAll() {
-		MongoDatabase db = getMongoDb();
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
 		MongoCollection<Document> collection = db.getCollection("gamers");
 		
 		List<UserGames> uGames = new ArrayList<UserGames>();
@@ -194,6 +200,7 @@ public class AnnotananoApiApplication {
 	            uGames.add(user);
 	        }
 	   });
+		mongoClient.close();
 		return uGames;
 	}
 
@@ -201,13 +208,13 @@ public class AnnotananoApiApplication {
 		SpringApplication.run(AnnotananoApiApplication.class, args);
 	}
 	
-	private MongoDatabase getMongoDb() {
+	private com.mongodb.MongoClient getMongoDb() {
 		MongoClientURI uri = new MongoClientURI(
 			    "mongodb+srv://lokad90:mongodb@cluster0-biuot.mongodb.net/test?retryWrites=true&w=majority");
 			
 		com.mongodb.MongoClient mongoClient = new com.mongodb.MongoClient(uri);
-		MongoDatabase database = mongoClient.getDatabase("annotananodb");
-		return database;
+		//MongoDatabase database = mongoClient.getDatabase("annotananodb");
+		return mongoClient;
 	}
 	
 	@Bean
