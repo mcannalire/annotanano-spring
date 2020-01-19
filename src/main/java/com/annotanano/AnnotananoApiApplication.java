@@ -64,7 +64,10 @@ public class AnnotananoApiApplication {
 		MongoDatabase db = getMongoDb();
 		MongoCollection<Document> collection = db.getCollection("gamers");
 		
-		Document document = collection.find().first();
+		Bson condition = new Document("$eq", userId);
+		Bson filter = new Document("userId", condition);
+		
+		Document document = collection.find(filter).first();
 		        
         UserGames user = new UserGames();
         user.setName(document.getString("name"));
