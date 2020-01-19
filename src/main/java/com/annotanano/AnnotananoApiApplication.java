@@ -8,6 +8,8 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +29,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @RestController
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnnotananoApiApplication {
@@ -66,6 +68,7 @@ public class AnnotananoApiApplication {
 		        
         UserGames user = new UserGames();
         user.setName(document.getString("name"));
+        user.setUserId(document.getString("userId"));
         user.setAvatarUrl(document.getString("avatarUrl"));
         List<Document> listGamesDoc = (List<Document>)document.get("gamesThisYear");
         List<Game> userGames = new ArrayList<Game>();
