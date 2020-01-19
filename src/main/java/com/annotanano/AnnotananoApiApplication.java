@@ -72,7 +72,7 @@ public class AnnotananoApiApplication {
         listGamesDoc.forEach((Document d) -> {
         	Game game = new Game();
         	game.setName(d.getString("name"));
-        	game.setPercentComp(d.getString("percentComp"));
+        	game.setPercentComp(d.getInteger("percentComp"));
         	game.setPlatform(d.getString("platform"));
         	game.setId(d.getString("id"));
         	userGames.add(game);
@@ -137,7 +137,7 @@ public class AnnotananoApiApplication {
 	            listGamesDoc.forEach((Document d) -> {
 	            	Game game = new Game();
 	            	game.setName(d.getString("name"));
-	            	game.setPercentComp(d.getString("percentComp"));
+	            	game.setPercentComp(d.getInteger("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
 	            	game.setId(d.getString("id"));
 	            	userGames.add(game);

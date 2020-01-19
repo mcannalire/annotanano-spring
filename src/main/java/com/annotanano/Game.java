@@ -4,7 +4,7 @@ public class Game {
 
 	private String name;
 	private String platform;
-	private String percentComp;
+	private Integer percentComp;
 	private String id;
 	
 	public String getName() {
@@ -20,10 +20,10 @@ public class Game {
 		this.platform = platform;
 	}
 	
-	public String getPercentComp() {
+	public Integer getPercentComp() {
 		return percentComp;
 	}
-	public void setPercentComp(String percentComp) {
+	public void setPercentComp(Integer percentComp) {
 		this.percentComp = percentComp;
 	}
 	public String getId() {
