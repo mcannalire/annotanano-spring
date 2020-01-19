@@ -100,33 +100,64 @@ public class AnnotananoApiApplication {
 		
 		Document query = collection.find(filter).first();
 		
-		if(query != null && userGames != null) {
-			Document update = new Document();
-			update.append("name", userGames.getName());
-			update.append("avatarUrl", userGames.getAvatarUrl());
-			if(userGames.getGamesThisYear() != null && !userGames.getGamesThisYear().isEmpty()) {
-				for (Game game : userGames.getGamesThisYear()) {
-					if(game.getId() == null || game.getId().isEmpty()) {
-						ObjectId id = new ObjectId();
-						game.setId(id.get().toString());
+		if(query != null) {
+			if(userGames != null) {
+				Document update = new Document();
+				update.append("name", userGames.getName());
+				update.append("avatarUrl", userGames.getAvatarUrl());
+				if(userGames.getGamesThisYear() != null && !userGames.getGamesThisYear().isEmpty()) {
+					for (Game game : userGames.getGamesThisYear()) {
+						if(game.getId() == null || game.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							game.setId(id.get().toString());
+						}
 					}
+					
+					List<Document> documentListGames = new ArrayList<Document>();
+					for (Game game : userGames.getGamesThisYear()) {
+						Document gameDocument = new Document();
+						gameDocument.append("id", game.getId());
+						gameDocument.append("name", game.getName());
+						gameDocument.append("percentComp", game.getPercentComp());
+						gameDocument.append("platform", game.getPlatform());
+						documentListGames.add(gameDocument);
+					}
+					
+					update.append("gamesThisYear", documentListGames);
+					Bson dupdate = new Document("$set", update);
+					collection.updateOne(query, dupdate);
 				}
-				
-				List<Document> documentListGames = new ArrayList<Document>();
-				for (Game game : userGames.getGamesThisYear()) {
-					Document gameDocument = new Document();
-					gameDocument.append("id", game.getId());
-					gameDocument.append("name", game.getName());
-					gameDocument.append("percentComp", game.getPercentComp());
-					gameDocument.append("platform", game.getPlatform());
-					documentListGames.add(gameDocument);
-				}
-				
-				update.append("gamesThisYear", documentListGames);
-				Bson dupdate = new Document("$set", update);
-				collection.updateOne(query, dupdate);
 			}
 			
+		} else {
+			if(userGames != null){
+				Document update = new Document();
+				update.append("name", userGames.getName());
+				update.append("avatarUrl", userGames.getAvatarUrl());
+				update.append("userId", userGames.getUserId());
+				if(userGames.getGamesThisYear() != null && !userGames.getGamesThisYear().isEmpty()) {
+					for (Game game : userGames.getGamesThisYear()) {
+						if(game.getId() == null || game.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							game.setId(id.get().toString());
+						}
+					}
+					
+					List<Document> documentListGames = new ArrayList<Document>();
+					for (Game game : userGames.getGamesThisYear()) {
+						Document gameDocument = new Document();
+						gameDocument.append("id", game.getId());
+						gameDocument.append("name", game.getName());
+						gameDocument.append("percentComp", game.getPercentComp());
+						gameDocument.append("platform", game.getPlatform());
+						documentListGames.add(gameDocument);
+					}
+					
+					update.append("gamesThisYear", documentListGames);
+					//Bson dupdate = new Document("$set", update);
+					collection.insertOne(update);
+				}
+			}
 			
 		}
 		
