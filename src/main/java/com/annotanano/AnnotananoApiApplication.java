@@ -67,7 +67,17 @@ public class AnnotananoApiApplication {
 	            UserGames user = new UserGames();
 	            user.setName(document.getString("name"));
 	            user.setAvatarUrl(document.getString("avatarUrl"));
-	            user.setGamesThisYear(document.getList("gamesThisYear", Game.class));
+	            List<Document> listGamesDoc = (List<Document>)document.get("gamesThisYear");
+	            List<Game> userGames = new ArrayList<Game>();
+	            listGamesDoc.forEach((Document d) -> {
+	            	Game game = new Game();
+	            	game.setCompletato(d.getBoolean("completato"));
+	            	game.setName(d.getString("name"));
+	            	game.setPercentComp(d.getString("percentComp"));
+	            	game.setPlatform(d.getString("platform"));
+	            	userGames.add(game);
+	            });
+	            user.setGamesThisYear(userGames);
 	            uGames.add(user);
 	        }
 	   });
