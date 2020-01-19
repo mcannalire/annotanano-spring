@@ -4,7 +4,6 @@ public class Game {
 
 	private String name;
 	private String platform;
-	private boolean completato;
 	private String percentComp;
 	private String id;
 	
@@ -20,12 +19,7 @@ public class Game {
 	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
-	public boolean isCompletato() {
-		return completato;
-	}
-	public void setCompletato(boolean completato) {
-		this.completato = completato;
-	}
+	
 	public String getPercentComp() {
 		return percentComp;
 	}

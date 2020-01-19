@@ -71,7 +71,6 @@ public class AnnotananoApiApplication {
         List<Game> userGames = new ArrayList<Game>();
         listGamesDoc.forEach((Document d) -> {
         	Game game = new Game();
-        	game.setCompletato(d.getBoolean("completato"));
         	game.setName(d.getString("name"));
         	game.setPercentComp(d.getString("percentComp"));
         	game.setPlatform(d.getString("platform"));
@@ -137,7 +136,6 @@ public class AnnotananoApiApplication {
 	            List<Game> userGames = new ArrayList<Game>();
 	            listGamesDoc.forEach((Document d) -> {
 	            	Game game = new Game();
-	            	game.setCompletato(d.getBoolean("completato"));
 	            	game.setName(d.getString("name"));
 	            	game.setPercentComp(d.getString("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
