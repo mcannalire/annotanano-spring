@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -55,8 +56,36 @@ public class AnnotananoApiApplication {
 		return user;
 	}
 	
+	@SuppressWarnings("deprecation")
+	@PostMapping("/getUserGames")
+	public UserGames getUserGames(@RequestBody String userId) {
+		MongoDatabase db = getMongoDb();
+		MongoCollection<Document> collection = db.getCollection("gamers");
+		
+		Document document = collection.find().first();
+		        
+        UserGames user = new UserGames();
+        user.setName(document.getString("name"));
+        user.setAvatarUrl(document.getString("avatarUrl"));
+        List<Document> listGamesDoc = (List<Document>)document.get("gamesThisYear");
+        List<Game> userGames = new ArrayList<Game>();
+        listGamesDoc.forEach((Document d) -> {
+        	Game game = new Game();
+        	game.setCompletato(d.getBoolean("completato"));
+        	game.setName(d.getString("name"));
+        	game.setPercentComp(d.getString("percentComp"));
+        	game.setPlatform(d.getString("platform"));
+        	game.setId(d.getString("id"));
+        	userGames.add(game);
+        });
+        user.setGamesThisYear(userGames);
+	        
+	   
+		return user;
+	}
+	
 	@PutMapping
-	public User update(@RequestBody UserGames userGames) {
+	public UserGames update(@RequestBody UserGames userGames) {
 		
 		MongoDatabase db = getMongoDb();
 		
@@ -64,8 +93,28 @@ public class AnnotananoApiApplication {
 		Bson condition = new Document("$eq", userGames.getUserId());
 		Bson filter = new Document("userId", condition);
 		
-		Document document = collection.find(filter).first();
-		return null;
+		Document query = collection.find(filter).first();
+		
+		if(query != null && userGames != null) {
+			Document update = new Document();
+			update.append("name", userGames.getName());
+			update.append("avatarUrl", userGames.getAvatarUrl());
+			if(userGames.getGamesThisYear() != null && !userGames.getGamesThisYear().isEmpty()) {
+				for (Game game : userGames.getGamesThisYear()) {
+					if(game.getId() == null || game.getId().isEmpty()) {
+						ObjectId id = new ObjectId();
+						game.setId(id.get().toString());
+					}
+				}
+				
+				update.append("gamesThisYear", userGames.getGamesThisYear());
+				collection.updateOne(query, update);
+			}
+			
+			
+		}
+		
+		return userGames;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -92,7 +141,7 @@ public class AnnotananoApiApplication {
 	            	game.setName(d.getString("name"));
 	            	game.setPercentComp(d.getString("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
-	            	game.setId(d.getObjectId("id").toString());
+	            	game.setId(d.getString("id"));
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
