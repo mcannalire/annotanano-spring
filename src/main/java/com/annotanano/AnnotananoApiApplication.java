@@ -203,6 +203,47 @@ public class AnnotananoApiApplication {
 		mongoClient.close();
 		return uGames;
 	}
+	
+	@SuppressWarnings("deprecation")
+	@PostMapping("/getAllByUserId")
+	public List<UserGames> getAllByUserId(@RequestBody String userId) {
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
+		MongoCollection<Document> collection = db.getCollection("gamers");
+		
+		List<UserGames> uGames = new ArrayList<UserGames>();
+		
+		FindIterable<Document> cursor = collection.find();
+		
+		cursor.forEach(new Block<Document>() {
+	        @Override
+	        public void apply(final Document document) {
+	            UserGames user = new UserGames();
+	            user.setName(document.getString("name"));
+	            user.setAvatarUrl(document.getString("avatarUrl"));
+	            String documentUserId = document.getString("userId");
+	            if(userId != null && documentUserId != null && documentUserId.equals(userId)) {
+	            	user.setUserId(documentUserId);
+	            }
+	            
+	            List<Document> listGamesDoc = (List<Document>)document.get("gamesThisYear");
+	            List<Game> userGames = new ArrayList<Game>();
+	            listGamesDoc.forEach((Document d) -> {
+	            	Game game = new Game();
+	            	game.setName(d.getString("name"));
+	            	game.setPercentComp(d.getInteger("percentComp"));
+	            	game.setPlatform(d.getString("platform"));
+	            	game.setId(d.getString("id"));
+	            	userGames.add(game);
+	            });
+	            user.setGamesThisYear(userGames);
+	            uGames.add(user);
+	        }
+	   });
+		mongoClient.close();
+		return uGames;
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnnotananoApiApplication.class, args);
