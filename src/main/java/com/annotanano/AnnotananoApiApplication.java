@@ -84,6 +84,10 @@ public class AnnotananoApiApplication {
         	game.setPercentComp(d.getInteger("percentComp"));
         	game.setPlatform(d.getString("platform"));
         	game.setId(d.getString("id"));
+        	game.setHours(d.getInteger("hours"));
+        	game.setComment(d.getString("comment"));
+        	game.setLogo(d.getString("logo"));
+        	game.setRating(d.getInteger("rating"));
         	userGames.add(game);
         });
         user.setGamesThisYear(userGames);
@@ -124,6 +128,12 @@ public class AnnotananoApiApplication {
 						gameDocument.append("name", game.getName());
 						gameDocument.append("percentComp", game.getPercentComp());
 						gameDocument.append("platform", game.getPlatform());
+						
+						gameDocument.append("hours", game.getHours());
+						gameDocument.append("comment", game.getComment());
+						gameDocument.append("logo", game.getLogo());
+						gameDocument.append("rating", game.getRating());
+						
 						documentListGames.add(gameDocument);
 					}
 					
@@ -154,6 +164,11 @@ public class AnnotananoApiApplication {
 						gameDocument.append("name", game.getName());
 						gameDocument.append("percentComp", game.getPercentComp());
 						gameDocument.append("platform", game.getPlatform());
+						
+						gameDocument.append("hours", game.getHours());
+						gameDocument.append("comment", game.getComment());
+						gameDocument.append("logo", game.getLogo());
+						gameDocument.append("rating", game.getRating());
 						documentListGames.add(gameDocument);
 					}
 					
@@ -194,6 +209,10 @@ public class AnnotananoApiApplication {
 	            	game.setPercentComp(d.getInteger("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
 	            	game.setId(d.getString("id"));
+	            	game.setHours(d.getInteger("hours"));
+	            	game.setComment(d.getString("comment"));
+	            	game.setLogo(d.getString("logo"));
+	            	game.setRating(d.getInteger("rating"));
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
@@ -234,6 +253,10 @@ public class AnnotananoApiApplication {
 	            	game.setPercentComp(d.getInteger("percentComp"));
 	            	game.setPlatform(d.getString("platform"));
 	            	game.setId(d.getString("id"));
+	            	game.setHours(d.getInteger("hours"));
+	            	game.setComment(d.getString("comment"));
+	            	game.setLogo(d.getString("logo"));
+	            	game.setRating(d.getInteger("rating"));
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
