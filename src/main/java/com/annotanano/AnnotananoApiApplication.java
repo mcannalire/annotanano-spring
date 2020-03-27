@@ -31,7 +31,6 @@ import com.mongodb.client.MongoDatabase;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @RestController
-@CrossOrigin(origins="*", allowedHeaders = "*")
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnnotananoApiApplication {
 	
@@ -155,7 +154,7 @@ public class AnnotananoApiApplication {
 								Document gcDocument = new Document();
 								gcDocument.append("name", gc.getName());
 								gcDocument.append("percentComp", gc.getPercentComp());
-								documentListCollection.add(gameDocument);
+								documentListCollection.add(gcDocument);
 							}
 							gameDocument.append("collection", documentListCollection);
 						}
@@ -202,7 +201,7 @@ public class AnnotananoApiApplication {
 								Document gcDocument = new Document();
 								gcDocument.append("name", gc.getName());
 								gcDocument.append("percentComp", gc.getPercentComp());
-								documentListCollection.add(gameDocument);
+								documentListCollection.add(gcDocument);
 							}
 							gameDocument.append("collection", documentListCollection);
 						}
