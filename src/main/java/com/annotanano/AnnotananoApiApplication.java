@@ -31,6 +31,7 @@ import com.mongodb.client.MongoDatabase;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @RestController
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnnotananoApiApplication {
 	
@@ -88,6 +89,19 @@ public class AnnotananoApiApplication {
         	game.setComment(d.getString("comment"));
         	game.setLogo(d.getString("logo"));
         	game.setRating(d.getInteger("rating"));
+        	game.setCol(d.getBoolean("col"));
+        	
+        	if(d.get("collection") != null) {
+        		List<Document> listGamesCollection = (List<Document>)d.get("collection");
+        		List<GameCollection> listCollectionToSave = new ArrayList<GameCollection>();
+        		listGamesCollection.forEach((Document dd) -> {
+        			GameCollection gc = new GameCollection();
+            		gc.setName(dd.getString("name"));
+            		gc.setPercentComp(dd.getInteger("percentComp"));
+            		listCollectionToSave.add(gc);
+        		});
+        		game.setCollection(listCollectionToSave);
+        	}
         	userGames.add(game);
         });
         user.setGamesThisYear(userGames);
@@ -133,7 +147,18 @@ public class AnnotananoApiApplication {
 						gameDocument.append("comment", game.getComment());
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
+						gameDocument.append("col", game.getCol());
 						
+						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
+							List<Document> documentListCollection = new ArrayList<Document>();
+							for (GameCollection gc : game.getCollection()) {
+								Document gcDocument = new Document();
+								gcDocument.append("name", gc.getName());
+								gcDocument.append("percentComp", gc.getPercentComp());
+								documentListCollection.add(gameDocument);
+							}
+							gameDocument.append("collection", documentListCollection);
+						}
 						documentListGames.add(gameDocument);
 					}
 					
@@ -169,6 +194,19 @@ public class AnnotananoApiApplication {
 						gameDocument.append("comment", game.getComment());
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
+						gameDocument.append("col", game.getCol());
+						
+						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
+							List<Document> documentListCollection = new ArrayList<Document>();
+							for (GameCollection gc : game.getCollection()) {
+								Document gcDocument = new Document();
+								gcDocument.append("name", gc.getName());
+								gcDocument.append("percentComp", gc.getPercentComp());
+								documentListCollection.add(gameDocument);
+							}
+							gameDocument.append("collection", documentListCollection);
+						}
+						
 						documentListGames.add(gameDocument);
 					}
 					
@@ -213,6 +251,20 @@ public class AnnotananoApiApplication {
 	            	game.setComment(d.getString("comment"));
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
+	            	game.setCol(d.getBoolean("col"));
+	            	
+	            	if(d.get("collection") != null) {
+	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
+	            		List<GameCollection> listCollectionToSave = new ArrayList<GameCollection>();
+	            		listGamesCollection.forEach((Document dd) -> {
+	            			GameCollection gc = new GameCollection();
+	                		gc.setName(dd.getString("name"));
+	                		gc.setPercentComp(dd.getInteger("percentComp"));
+	                		listCollectionToSave.add(gc);
+	            		});
+	            		game.setCollection(listCollectionToSave);
+	            	}
+	            	
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
@@ -257,6 +309,20 @@ public class AnnotananoApiApplication {
 	            	game.setComment(d.getString("comment"));
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
+	            	game.setCol(d.getBoolean("col"));
+	            	
+	            	if(d.get("collection") != null) {
+	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
+	            		List<GameCollection> listCollectionToSave = new ArrayList<GameCollection>();
+	            		listGamesCollection.forEach((Document dd) -> {
+	            			GameCollection gc = new GameCollection();
+	                		gc.setName(dd.getString("name"));
+	                		gc.setPercentComp(dd.getInteger("percentComp"));
+	                		listCollectionToSave.add(gc);
+	            		});
+	            		game.setCollection(listCollectionToSave);
+	            	}
+	            	
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);

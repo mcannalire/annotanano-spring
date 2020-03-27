@@ -1,5 +1,7 @@
 package com.annotanano;
 
+import java.util.List;
+
 public class Game {
 
 	private String name;
@@ -10,6 +12,8 @@ public class Game {
 	private String logo;
 	private Integer rating;
 	private Integer hours;
+	private List<GameCollection> collection;
+	private Boolean col;
 	
 	public String getName() {
 		return name;
@@ -60,6 +64,19 @@ public class Game {
 	public void setHours(Integer hours) {
 		this.hours = hours;
 	}
+	public List<GameCollection> getCollection() {
+		return collection;
+	}
+	public void setCollection(List<GameCollection> collection) {
+		this.collection = collection;
+	}
+	public Boolean getCol() {
+		return col;
+	}
+	public void setCol(Boolean col) {
+		this.col = col;
+	}
+	
 	
 	
 }
