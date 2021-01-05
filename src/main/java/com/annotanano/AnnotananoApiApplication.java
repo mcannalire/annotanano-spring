@@ -130,7 +130,7 @@ public class AnnotananoApiApplication {
         List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
         List<TvSeries> userSeries = new ArrayList<TvSeries>();
         if(listSeriesDoc != null) {
-        	listMovieDoc.forEach((Document d) -> {
+        	listSeriesDoc.forEach((Document d) -> {
             	TvSeries serie = new TvSeries();
             	serie.setName(d.getString("name"));
             	serie.setId(d.getString("id"));
