@@ -123,6 +123,39 @@ public class AnnotananoApiApplication {
         	userGames.add(game);
         });
         user.setGamesThisYear(userGames);
+        
+        List<Document> listMovieDoc = (List<Document>)document.get("moviesThisYear");
+        List<Movie> userMovies = new ArrayList<Movie>();
+        if(listMovieDoc != null) {
+        	listMovieDoc.forEach((Document d) -> {
+            	Movie movie = new Movie();
+            	movie.setName(d.getString("name"));
+            	movie.setId(d.getString("id"));
+            	movie.setComment(d.getString("comment"));
+            	movie.setUrl(d.getString("url"));
+            	movie.setRating(d.getInteger("rating"));
+            	
+            	
+            	userMovies.add(movie);
+            });
+            user.setMoviesThisYear(userMovies);
+        }
+        
+        List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
+        List<TvSeries> userSeries = new ArrayList<TvSeries>();
+        if(listSeriesDoc != null) {
+        	listMovieDoc.forEach((Document d) -> {
+            	TvSeries serie = new TvSeries();
+            	serie.setName(d.getString("name"));
+            	serie.setId(d.getString("id"));
+            	serie.setComment(d.getString("comment"));
+            	serie.setUrl(d.getString("url"));
+            	serie.setRating(d.getInteger("rating"));
+            	
+            	userSeries.add(serie);
+            });
+            user.setSeriesThisYear(userSeries);
+        }
 	        
         mongoClient.close();
 		return user;
@@ -139,7 +172,7 @@ public class AnnotananoApiApplication {
 		Bson filter = new Document("userId", condition);
 		
 		Document query = collection.find(filter).first();
-		
+		Bson dupdate = null;
 		if(query != null) {
 			if(userGames != null) {
 				Document update = new Document();
@@ -181,11 +214,56 @@ public class AnnotananoApiApplication {
 					}
 					
 					update.append("gamesThisYear", documentListGames);
-					Bson dupdate = new Document("$set", update);
-					collection.updateOne(query, dupdate);
 				}
-			}
 			
+			
+				if(userGames.getMoviesThisYear() != null && !userGames.getMoviesThisYear().isEmpty()) {
+					for (Movie movie : userGames.getMoviesThisYear()) {
+						if(movie.getId() == null || movie.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							movie.setId(id.get().toString());
+						}
+					}
+					
+					List<Document> documentListMovies = new ArrayList<Document>();
+					for (Movie movie : userGames.getMoviesThisYear()) {
+						Document movieDocument = new Document();
+						movieDocument.append("id", movie.getId());
+						movieDocument.append("name", movie.getName());						
+						movieDocument.append("comment", movie.getComment());
+						movieDocument.append("logo", movie.getUrl());
+						movieDocument.append("rating", movie.getRating());
+						documentListMovies.add(movieDocument);
+					}
+					
+					update.append("moviesThisYear", documentListMovies);
+				}
+				
+				if(userGames.getSeriesThisYear() != null && !userGames.getSeriesThisYear().isEmpty()) {
+					for (TvSeries serie : userGames.getSeriesThisYear()) {
+						if(serie.getId() == null || serie.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							serie.setId(id.get().toString());
+						}
+					}
+					
+					List<Document> documentListSeries = new ArrayList<Document>();
+					for (TvSeries serie : userGames.getSeriesThisYear()) {
+						Document seriesDocument = new Document();
+						seriesDocument.append("id", serie.getId());
+						seriesDocument.append("name", serie.getName());						
+						seriesDocument.append("comment", serie.getComment());
+						seriesDocument.append("logo", serie.getUrl());
+						seriesDocument.append("rating", serie.getRating());
+						documentListSeries.add(seriesDocument);
+					}
+					
+					update.append("seriesThisYear", documentListSeries);
+				}
+				
+				dupdate = new Document("$set", update);
+				collection.updateOne(query, dupdate);
+			}
 		} else {
 			if(userGames != null){
 				Document update = new Document();
@@ -230,8 +308,52 @@ public class AnnotananoApiApplication {
 					
 					update.append("gamesThisYear", documentListGames);
 					//Bson dupdate = new Document("$set", update);
-					collection.insertOne(update);
 				}
+				
+				if(userGames.getMoviesThisYear() != null && !userGames.getMoviesThisYear().isEmpty()) {
+					for (Movie movie : userGames.getMoviesThisYear()) {
+						if(movie.getId() == null || movie.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							movie.setId(id.get().toString());
+						}
+					}
+					
+					List<Document> documentListMovies = new ArrayList<Document>();
+					for (Movie movie : userGames.getMoviesThisYear()) {
+						Document movieDocument = new Document();
+						movieDocument.append("id", movie.getId());
+						movieDocument.append("name", movie.getName());						
+						movieDocument.append("comment", movie.getComment());
+						movieDocument.append("logo", movie.getUrl());
+						movieDocument.append("rating", movie.getRating());
+						documentListMovies.add(movieDocument);
+					}
+					
+					update.append("moviesThisYear", documentListMovies);
+				}
+				
+				if(userGames.getSeriesThisYear() != null && !userGames.getSeriesThisYear().isEmpty()) {
+					for (TvSeries serie : userGames.getSeriesThisYear()) {
+						if(serie.getId() == null || serie.getId().isEmpty()) {
+							ObjectId id = new ObjectId();
+							serie.setId(id.get().toString());
+						}
+					}
+					
+					List<Document> documentListSeries = new ArrayList<Document>();
+					for (TvSeries serie : userGames.getSeriesThisYear()) {
+						Document seriesDocument = new Document();
+						seriesDocument.append("id", serie.getId());
+						seriesDocument.append("name", serie.getName());						
+						seriesDocument.append("comment", serie.getComment());
+						seriesDocument.append("logo", serie.getUrl());
+						seriesDocument.append("rating", serie.getRating());
+						documentListSeries.add(seriesDocument);
+					}
+					
+					update.append("seriesThisYear", documentListSeries);
+				}
+				collection.insertOne(update);
 			}
 			
 		}
@@ -286,6 +408,34 @@ public class AnnotananoApiApplication {
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
+	            
+	            List<Movie> userMovies = new ArrayList<Movie>();
+	            List<Document> listMoviesDoc = (List<Document>)document.get("moviesThisYear");
+	            listMoviesDoc.forEach((Document d) -> {
+	            	Movie movie = new Movie();
+	            	movie.setName(d.getString("name"));
+	            	movie.setId(d.getString("id"));
+	            	movie.setComment(d.getString("comment"));
+	            	movie.setUrl(d.getString("url"));
+	            	movie.setRating(d.getInteger("rating"));
+	            	
+	            	userMovies.add(movie);
+	            });
+	            user.setMoviesThisYear(userMovies);
+	            
+	            List<TvSeries> userSeries = new ArrayList<TvSeries>();
+	            List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
+	            listSeriesDoc.forEach((Document d) -> {
+	            	TvSeries serie = new TvSeries();
+	            	serie.setName(d.getString("name"));
+	            	serie.setId(d.getString("id"));
+	            	serie.setComment(d.getString("comment"));
+	            	serie.setUrl(d.getString("url"));
+	            	serie.setRating(d.getInteger("rating"));
+	            	
+	            	userSeries.add(serie);
+	            });
+	            user.setSeriesThisYear(userSeries);
 	            uGames.add(user);
 	        }
 	   });
@@ -312,6 +462,8 @@ public class AnnotananoApiApplication {
 	            user.setAvatarUrl(document.getString("avatarUrl"));
 	            List<String> yearAsList = getYearList();
 	            Map<String, List<Game>> gameGoldbook = new HashMap<String, List<Game>>();
+	            Map<String, List<Movie>> movieGoldbook = new HashMap<String, List<Movie>>();
+	            Map<String, List<TvSeries>> seriesGoldbook = new HashMap<String, List<TvSeries>>();
 	            for (String year : yearAsList) {
 	            	List<Document> listGamesDoc = (List<Document>)document.get(year+"_list");
 		            
@@ -351,9 +503,52 @@ public class AnnotananoApiApplication {
 			            
 		            }
 		            
+		            //MOVIES GOLDBOOK
+		            List<Document> listMoviesDoc = (List<Document>)document.get(year+"_movies_list");
+		            
+		            if(listMoviesDoc != null) {
+		            	listMoviesDoc.forEach((Document d) -> {
+		            		Movie movie = new Movie();
+		            		movie.setName(d.getString("name"));
+		            		movie.setId(d.getString("id"));
+			            	movie.setComment(d.getString("comment"));
+			            	movie.setUrl(d.getString("url"));
+			            	movie.setRating(d.getInteger("rating"));
+			            	
+			            	if(movieGoldbook.get(year+"_movies_list") == null) {
+			            		List<Movie> userMovies = new ArrayList<Movie>();
+			            		movieGoldbook.put(year+"_movies_list", userMovies);
+			            	} else {
+			            		movieGoldbook.get(year+"_movies_list").add(movie);
+			            	}
+		            	});
+		            }
+		            
+		            //SERIES TV GOLDBOOK
+		            List<Document> listSeriesDoc = (List<Document>)document.get(year+"_series_list");
+		            
+		            if(listSeriesDoc != null) {
+		            	listSeriesDoc.forEach((Document d) -> {
+		            		TvSeries serie = new TvSeries();
+		            		serie.setName(d.getString("name"));
+		            		serie.setId(d.getString("id"));
+		            		serie.setComment(d.getString("comment"));
+		            		serie.setUrl(d.getString("url"));
+		            		serie.setRating(d.getInteger("rating"));
+			            	
+			            	if(seriesGoldbook.get(year+"_series_list") == null) {
+			            		List<TvSeries> userSeries = new ArrayList<TvSeries>();
+			            		seriesGoldbook.put(year+"_series_list", userSeries);
+			            	} else {
+			            		seriesGoldbook.get(year+"_series_list").add(serie);
+			            	}
+		            	});
+		            }
 		            
 				}
 	            user.setUserGoldbook(gameGoldbook);
+	            user.setUserMovieGoldbook(movieGoldbook);
+	            user.setUserSeriesGoldbook(seriesGoldbook);
 	            uGames.add(user);
 	            
 	        }
@@ -424,6 +619,34 @@ public class AnnotananoApiApplication {
 	            	userGames.add(game);
 	            });
 	            user.setGamesThisYear(userGames);
+	            
+	            List<Movie> userMovies = new ArrayList<Movie>();
+	            List<Document> listMoviesDoc = (List<Document>)document.get("moviesThisYear");
+	            listMoviesDoc.forEach((Document d) -> {
+	            	Movie movie = new Movie();
+	            	movie.setName(d.getString("name"));
+	            	movie.setId(d.getString("id"));
+	            	movie.setComment(d.getString("comment"));
+	            	movie.setUrl(d.getString("url"));
+	            	movie.setRating(d.getInteger("rating"));
+	            	
+	            	userMovies.add(movie);
+	            });
+	            user.setMoviesThisYear(userMovies);
+	            
+	            List<TvSeries> userSeries = new ArrayList<TvSeries>();
+	            List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
+	            listSeriesDoc.forEach((Document d) -> {
+	            	TvSeries serie = new TvSeries();
+	            	serie.setName(d.getString("name"));
+	            	serie.setId(d.getString("id"));
+	            	serie.setComment(d.getString("comment"));
+	            	serie.setUrl(d.getString("url"));
+	            	serie.setRating(d.getInteger("rating"));
+	            	
+	            	userSeries.add(serie);
+	            });
+	            user.setSeriesThisYear(userSeries);
 	            uGames.add(user);
 	        }
 	   });
