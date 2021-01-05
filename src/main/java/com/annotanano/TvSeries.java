@@ -7,6 +7,7 @@ public class TvSeries {
 	private String url;
 	private String comment;
 	private String id;
+	private String platform;
 	
 	public String getId() {
 		return id;
@@ -37,6 +38,12 @@ public class TvSeries {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getPlatform() {
+		return platform;
+	}
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 	
 	

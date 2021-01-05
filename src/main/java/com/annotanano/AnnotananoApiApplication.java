@@ -119,6 +119,7 @@ public class AnnotananoApiApplication {
             	movie.setComment(d.getString("comment"));
             	movie.setUrl(d.getString("url"));
             	movie.setRating(d.getInteger("rating"));
+            	movie.setPlatform(d.getString("platform"));
             	
             	
             	userMovies.add(movie);
@@ -136,6 +137,7 @@ public class AnnotananoApiApplication {
             	serie.setComment(d.getString("comment"));
             	serie.setUrl(d.getString("url"));
             	serie.setRating(d.getInteger("rating"));
+            	serie.setPlatform(d.getString("platform"));
             	
             	userSeries.add(serie);
             });
@@ -218,6 +220,7 @@ public class AnnotananoApiApplication {
 						movieDocument.append("comment", movie.getComment());
 						movieDocument.append("logo", movie.getUrl());
 						movieDocument.append("rating", movie.getRating());
+						movieDocument.append("platform", movie.getPlatform());
 						documentListMovies.add(movieDocument);
 					}
 					
@@ -240,6 +243,7 @@ public class AnnotananoApiApplication {
 						seriesDocument.append("comment", serie.getComment());
 						seriesDocument.append("logo", serie.getUrl());
 						seriesDocument.append("rating", serie.getRating());
+						seriesDocument.append("platform", serie.getPlatform());
 						documentListSeries.add(seriesDocument);
 					}
 					
@@ -311,6 +315,7 @@ public class AnnotananoApiApplication {
 						movieDocument.append("comment", movie.getComment());
 						movieDocument.append("logo", movie.getUrl());
 						movieDocument.append("rating", movie.getRating());
+						movieDocument.append("platform", movie.getPlatform());
 						documentListMovies.add(movieDocument);
 					}
 					
@@ -333,6 +338,7 @@ public class AnnotananoApiApplication {
 						seriesDocument.append("comment", serie.getComment());
 						seriesDocument.append("logo", serie.getUrl());
 						seriesDocument.append("rating", serie.getRating());
+						seriesDocument.append("platform", serie.getPlatform());
 						documentListSeries.add(seriesDocument);
 					}
 					
@@ -404,7 +410,7 @@ public class AnnotananoApiApplication {
 		            	movie.setComment(d.getString("comment"));
 		            	movie.setUrl(d.getString("url"));
 		            	movie.setRating(d.getInteger("rating"));
-		            	
+		            	movie.setPlatform(d.getString("platform"));
 		            	userMovies.add(movie);
 		            });
 		            user.setMoviesThisYear(userMovies);
@@ -420,7 +426,7 @@ public class AnnotananoApiApplication {
 		            	serie.setComment(d.getString("comment"));
 		            	serie.setUrl(d.getString("url"));
 		            	serie.setRating(d.getInteger("rating"));
-		            	
+		            	serie.setPlatform(d.getString("platform"));
 		            	userSeries.add(serie);
 		            });
 		            user.setSeriesThisYear(userSeries);
@@ -504,7 +510,7 @@ public class AnnotananoApiApplication {
 			            	movie.setComment(d.getString("comment"));
 			            	movie.setUrl(d.getString("url"));
 			            	movie.setRating(d.getInteger("rating"));
-			            	
+			            	movie.setPlatform(d.getString("platform"));
 			            	if(movieGoldbook.get(year+"_movies_list") == null) {
 			            		List<Movie> userMovies = new ArrayList<Movie>();
 			            		movieGoldbook.put(year+"_movies_list", userMovies);
@@ -525,7 +531,7 @@ public class AnnotananoApiApplication {
 		            		serie.setComment(d.getString("comment"));
 		            		serie.setUrl(d.getString("url"));
 		            		serie.setRating(d.getInteger("rating"));
-			            	
+			            	serie.setPlatform(d.getString("platform"));
 			            	if(seriesGoldbook.get(year+"_series_list") == null) {
 			            		List<TvSeries> userSeries = new ArrayList<TvSeries>();
 			            		seriesGoldbook.put(year+"_series_list", userSeries);
@@ -619,7 +625,7 @@ public class AnnotananoApiApplication {
 	            	movie.setComment(d.getString("comment"));
 	            	movie.setUrl(d.getString("url"));
 	            	movie.setRating(d.getInteger("rating"));
-	            	
+	            	movie.setPlatform(d.getString("platform"));
 	            	userMovies.add(movie);
 	            });
 	            user.setMoviesThisYear(userMovies);
@@ -633,7 +639,7 @@ public class AnnotananoApiApplication {
 	            	serie.setComment(d.getString("comment"));
 	            	serie.setUrl(d.getString("url"));
 	            	serie.setRating(d.getInteger("rating"));
-	            	
+	            	serie.setPlatform(d.getString("platform"));
 	            	userSeries.add(serie);
 	            });
 	            user.setSeriesThisYear(userSeries);

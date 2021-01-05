@@ -7,7 +7,14 @@ public class Movie {
 	private String url;
 	private String comment;
 	private String id;
+	private String platform;
 	
+	public String getPlatform() {
+		return platform;
+	}
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
 	public String getId() {
 		return id;
 	}
