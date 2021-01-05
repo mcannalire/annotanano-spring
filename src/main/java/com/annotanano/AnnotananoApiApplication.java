@@ -218,7 +218,7 @@ public class AnnotananoApiApplication {
 						movieDocument.append("id", movie.getId());
 						movieDocument.append("name", movie.getName());						
 						movieDocument.append("comment", movie.getComment());
-						movieDocument.append("logo", movie.getUrl());
+						movieDocument.append("url", movie.getUrl());
 						movieDocument.append("rating", movie.getRating());
 						movieDocument.append("platform", movie.getPlatform());
 						documentListMovies.add(movieDocument);
@@ -241,7 +241,7 @@ public class AnnotananoApiApplication {
 						seriesDocument.append("id", serie.getId());
 						seriesDocument.append("name", serie.getName());						
 						seriesDocument.append("comment", serie.getComment());
-						seriesDocument.append("logo", serie.getUrl());
+						seriesDocument.append("url", serie.getUrl());
 						seriesDocument.append("rating", serie.getRating());
 						seriesDocument.append("platform", serie.getPlatform());
 						documentListSeries.add(seriesDocument);
@@ -313,7 +313,7 @@ public class AnnotananoApiApplication {
 						movieDocument.append("id", movie.getId());
 						movieDocument.append("name", movie.getName());						
 						movieDocument.append("comment", movie.getComment());
-						movieDocument.append("logo", movie.getUrl());
+						movieDocument.append("url", movie.getUrl());
 						movieDocument.append("rating", movie.getRating());
 						movieDocument.append("platform", movie.getPlatform());
 						documentListMovies.add(movieDocument);
@@ -336,7 +336,7 @@ public class AnnotananoApiApplication {
 						seriesDocument.append("id", serie.getId());
 						seriesDocument.append("name", serie.getName());						
 						seriesDocument.append("comment", serie.getComment());
-						seriesDocument.append("logo", serie.getUrl());
+						seriesDocument.append("url", serie.getUrl());
 						seriesDocument.append("rating", serie.getRating());
 						seriesDocument.append("platform", serie.getPlatform());
 						documentListSeries.add(seriesDocument);
