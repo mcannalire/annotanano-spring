@@ -626,31 +626,37 @@ public class AnnotananoApiApplication {
 	            
 	            List<Movie> userMovies = new ArrayList<Movie>();
 	            List<Document> listMoviesDoc = (List<Document>)document.get("moviesThisYear");
-	            listMoviesDoc.forEach((Document d) -> {
-	            	Movie movie = new Movie();
-	            	movie.setName(d.getString("name"));
-	            	movie.setId(d.getString("id"));
-	            	movie.setComment(d.getString("comment"));
-	            	movie.setUrl(d.getString("url"));
-	            	movie.setRating(d.getInteger("rating"));
-	            	movie.setPlatform(d.getString("platform"));
-	            	userMovies.add(movie);
-	            });
-	            user.setMoviesThisYear(userMovies);
+	            if(listMoviesDoc != null) {
+	            	 listMoviesDoc.forEach((Document d) -> {
+	 	            	Movie movie = new Movie();
+	 	            	movie.setName(d.getString("name"));
+	 	            	movie.setId(d.getString("id"));
+	 	            	movie.setComment(d.getString("comment"));
+	 	            	movie.setUrl(d.getString("url"));
+	 	            	movie.setRating(d.getInteger("rating"));
+	 	            	movie.setPlatform(d.getString("platform"));
+	 	            	userMovies.add(movie);
+	 	            });
+	 	            user.setMoviesThisYear(userMovies);
+	            }
+	           
 	            
 	            List<TvSeries> userSeries = new ArrayList<TvSeries>();
 	            List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
-	            listSeriesDoc.forEach((Document d) -> {
-	            	TvSeries serie = new TvSeries();
-	            	serie.setName(d.getString("name"));
-	            	serie.setId(d.getString("id"));
-	            	serie.setComment(d.getString("comment"));
-	            	serie.setUrl(d.getString("url"));
-	            	serie.setRating(d.getInteger("rating"));
-	            	serie.setPlatform(d.getString("platform"));
-	            	userSeries.add(serie);
-	            });
-	            user.setSeriesThisYear(userSeries);
+	            if(listSeriesDoc != null) {
+	            	listSeriesDoc.forEach((Document d) -> {
+		            	TvSeries serie = new TvSeries();
+		            	serie.setName(d.getString("name"));
+		            	serie.setId(d.getString("id"));
+		            	serie.setComment(d.getString("comment"));
+		            	serie.setUrl(d.getString("url"));
+		            	serie.setRating(d.getInteger("rating"));
+		            	serie.setPlatform(d.getString("platform"));
+		            	userSeries.add(serie);
+		            });
+		            user.setSeriesThisYear(userSeries);
+	            }
+	            
 	            uGames.add(user);
 	        }
 	   });
