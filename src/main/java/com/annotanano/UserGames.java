@@ -8,6 +8,8 @@ public class UserGames {
 	private String name;
 	private String avatarUrl;
 	private List<Game> gamesThisYear;
+	private List<Movie> moviesThisYear;
+	private List<TvSeries> seriesThisYear;
 	
 	public String getUserId() {
 		return userId;
@@ -32,6 +34,18 @@ public class UserGames {
 	}
 	public void setGamesThisYear(List<Game> gamesThisYear) {
 		this.gamesThisYear = gamesThisYear;
+	}
+	public List<Movie> getMoviesThisYear() {
+		return moviesThisYear;
+	}
+	public void setMoviesThisYear(List<Movie> moviesThisYear) {
+		this.moviesThisYear = moviesThisYear;
+	}
+	public List<TvSeries> getSeriesThisYear() {
+		return seriesThisYear;
+	}
+	public void setSeriesThisYear(List<TvSeries> seriesThisYear) {
+		this.seriesThisYear = seriesThisYear;
 	}
 	
 	
