@@ -225,6 +225,8 @@ public class AnnotananoApiApplication {
 					}
 					
 					update.append("moviesThisYear", documentListMovies);
+				} else {
+					update.append("moviesThisYear", null);
 				}
 				
 				if(userGames.getSeriesThisYear() != null && !userGames.getSeriesThisYear().isEmpty()) {
@@ -248,6 +250,8 @@ public class AnnotananoApiApplication {
 					}
 					
 					update.append("seriesThisYear", documentListSeries);
+				} else {
+					update.append("seriesThisYear", null);
 				}
 				
 				dupdate = new Document("$set", update);
@@ -320,6 +324,8 @@ public class AnnotananoApiApplication {
 					}
 					
 					update.append("moviesThisYear", documentListMovies);
+				} else {
+					update.append("moviesThisYear", null);
 				}
 				
 				if(userGames.getSeriesThisYear() != null && !userGames.getSeriesThisYear().isEmpty()) {
@@ -343,6 +349,8 @@ public class AnnotananoApiApplication {
 					}
 					
 					update.append("seriesThisYear", documentListSeries);
+				} else {
+					update.append("seriesThisYear", null);
 				}
 				collection.insertOne(update);
 			}
