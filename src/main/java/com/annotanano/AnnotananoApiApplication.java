@@ -28,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.mongodb.Block;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -37,6 +38,8 @@ import com.mongodb.client.MongoDatabase;
 @RestController
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnnotananoApiApplication {
+	
+	private static String gameApiKey;
 	
 	@PostMapping
 	public User login(@RequestBody UserCredential uCred) {
@@ -93,6 +96,7 @@ public class AnnotananoApiApplication {
         	game.setLogo(d.getString("logo"));
         	game.setRating(d.getInteger("rating"));
         	game.setCol(d.getBoolean("col"));
+        	game.setIdGame(d.getInteger("idGame"));
         	
         	if(d.get("collection") != null) {
         		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -186,6 +190,7 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
+						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -284,6 +289,7 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
+						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -391,6 +397,7 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
+	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -483,6 +490,7 @@ public class AnnotananoApiApplication {
 			            	game.setLogo(d.getString("logo"));
 			            	game.setRating(d.getInteger("rating"));
 			            	game.setCol(d.getBoolean("col"));
+			            	game.setIdGame(d.getInteger("idGame"));
 			            	
 			            	if(d.get("collection") != null) {
 			            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -607,6 +615,7 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
+	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -667,8 +676,25 @@ public class AnnotananoApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnnotananoApiApplication.class, args);
+		gameApiKey = getGameApiKey();
+		
 	}
 	
+	private static String getGameApiKey() {
+		MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
+		MongoCollection<Document> collection = db.getCollection("gamers");
+		FindIterable<Document> cursor = collection.find();
+		cursor.forEach(new Block<Document>() {
+	        @Override
+	        public void apply(final Document document) {
+	        	gameApiKey = document.getString("game_api_key");
+	        }
+	   });
+		mongoClient.close();
+		return null;
+	}
+
 	private static Integer getValueFromJson(String key, String json) {
 		Pattern p = Pattern.compile("\""+key+"\":(\\d+)");
 		Matcher m = p.matcher(json);
@@ -685,7 +711,7 @@ public class AnnotananoApiApplication {
 		return json;
 	}
 	
-	private com.mongodb.MongoClient getMongoDb() {
+	private static com.mongodb.MongoClient getMongoDb() {
 		MongoClientURI uri = new MongoClientURI(
 			    "mongodb+srv://lokad90:mongodb@cluster0-biuot.mongodb.net/test?retryWrites=true&w=majority");
 			

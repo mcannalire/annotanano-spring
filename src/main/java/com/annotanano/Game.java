@@ -14,6 +14,7 @@ public class Game {
 	private Integer hours;
 	private List<GameCollection> collection;
 	private Boolean col;
+	private Integer idGame;
 	
 	public String getName() {
 		return name;
@@ -75,6 +76,12 @@ public class Game {
 	}
 	public void setCol(Boolean col) {
 		this.col = col;
+	}
+	public Integer getIdGame() {
+		return idGame;
+	}
+	public void setIdGame(Integer idGame) {
+		this.idGame = idGame;
 	}
 	
 	
