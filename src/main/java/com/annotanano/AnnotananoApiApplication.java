@@ -676,7 +676,7 @@ public class AnnotananoApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnnotananoApiApplication.class, args);
-		gameApiKey = getGameApiKey();
+		//gameApiKey = getGameApiKey();
 		
 	}
 	
