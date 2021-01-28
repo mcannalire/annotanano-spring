@@ -80,11 +80,13 @@ public class AnnotananoApiApplication {
 		
 		if(document != null) {
 			Document update = new Document();
+			Bson dupdate = null;
 			update.append("userName", document.getString("userName"));
 			update.append("backgroundUrl", user.getBackgroundUrl());
 			update.append("pwd", document.getString("pwd"));
 			update.append("userId", document.getString("userId"));
-			collection.updateOne(filter, update);
+			dupdate = new Document("$set", update);
+			collection.updateOne(filter, dupdate);
 		} else {
 			throw new Exception("No user found with id: " + user.getUserId());
 		}
