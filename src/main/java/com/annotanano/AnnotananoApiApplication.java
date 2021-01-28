@@ -69,7 +69,7 @@ public class AnnotananoApiApplication {
 	}
 	
 	@PostMapping("/putUserSettings")
-	public User putUserSettings(User user) throws Exception {
+	public User putUserSettings(@RequestBody User user) throws Exception {
 		com.mongodb.MongoClient mongoClient = getMongoDb();
 		MongoDatabase db = mongoClient.getDatabase("annotananodb");
 		MongoCollection<Document> collection = db.getCollection("users");
