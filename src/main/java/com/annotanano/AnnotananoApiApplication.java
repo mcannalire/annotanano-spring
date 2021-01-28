@@ -55,8 +55,10 @@ public class AnnotananoApiApplication {
 		Document document = collection.find(filter).first();
 		
 		if(document != null) {
-			if(document.getString("pwd").equals(uCred.getPwd()))
+			if(document.getString("pwd").equals(uCred.getPwd())) {
 				user.setUserId(document.getString("userId"));
+				user.setBackgroundUrl(document.getString("backgroundUrl"));
+			}
 			else
 				user.setUserId("NA");
 		} else {
@@ -64,6 +66,31 @@ public class AnnotananoApiApplication {
 		}
 		mongoClient.close();
 		return user;
+	}
+	
+	@PostMapping("/putUserSettings")
+	public User putUserSettings(User user) throws Exception {
+		com.mongodb.MongoClient mongoClient = getMongoDb();
+		MongoDatabase db = mongoClient.getDatabase("annotananodb");
+		MongoCollection<Document> collection = db.getCollection("users");
+		Bson condition = new Document("$eq", user.getUserId());
+		Bson filter = new Document("userId", condition);
+		
+		Document document = collection.find(filter).first();
+		
+		if(document != null) {
+			Document update = new Document();
+			update.append("userName", document.getString("userName"));
+			update.append("backgroundUrl", user.getBackgroundUrl());
+			update.append("pwd", document.getString("pwd"));
+			update.append("userId", document.getString("userId"));
+			collection.updateOne(filter, update);
+		} else {
+			throw new Exception("No user found with id: " + user.getUserId());
+		}
+		mongoClient.close();
+		return user;
+		
 	}
 	
 	@SuppressWarnings("deprecation")
