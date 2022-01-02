@@ -499,6 +499,7 @@ public class AnnotananoApiApplication {
 			            	//userGames.add(game);
 			            	if(gameGoldbook.get(year+"_list") == null) {
 			            		List<Game> userGames = new ArrayList<Game>();
+			            		userGames.add(game);
 			            		gameGoldbook.put(year+"_list", userGames);
 			            	} else {
 			            		gameGoldbook.get(year+"_list").add(game);
@@ -521,6 +522,7 @@ public class AnnotananoApiApplication {
 			            	movie.setPlatform(d.getString("platform"));
 			            	if(movieGoldbook.get(year+"_movies_list") == null) {
 			            		List<Movie> userMovies = new ArrayList<Movie>();
+			            		userMovies.add(movie);
 			            		movieGoldbook.put(year+"_movies_list", userMovies);
 			            	} else {
 			            		movieGoldbook.get(year+"_movies_list").add(movie);
@@ -542,6 +544,7 @@ public class AnnotananoApiApplication {
 			            	serie.setPlatform(d.getString("platform"));
 			            	if(seriesGoldbook.get(year+"_series_list") == null) {
 			            		List<TvSeries> userSeries = new ArrayList<TvSeries>();
+			            		userSeries.add(serie);
 			            		seriesGoldbook.put(year+"_series_list", userSeries);
 			            	} else {
 			            		seriesGoldbook.get(year+"_series_list").add(serie);
