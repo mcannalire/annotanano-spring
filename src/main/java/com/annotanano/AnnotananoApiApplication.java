@@ -28,7 +28,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.mongodb.Block;
-import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -38,8 +37,6 @@ import com.mongodb.client.MongoDatabase;
 @RestController
 @RequestMapping(value = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AnnotananoApiApplication {
-	
-	private static String gameApiKey;
 	
 	@PostMapping
 	public User login(@RequestBody UserCredential uCred) {
@@ -55,10 +52,8 @@ public class AnnotananoApiApplication {
 		Document document = collection.find(filter).first();
 		
 		if(document != null) {
-			if(document.getString("pwd").equals(uCred.getPwd())) {
+			if(document.getString("pwd").equals(uCred.getPwd()))
 				user.setUserId(document.getString("userId"));
-				user.setBackgroundUrl(document.getString("backgroundUrl"));
-			}
 			else
 				user.setUserId("NA");
 		} else {
@@ -66,33 +61,6 @@ public class AnnotananoApiApplication {
 		}
 		mongoClient.close();
 		return user;
-	}
-	
-	@PostMapping("/putUserSettings")
-	public User putUserSettings(@RequestBody User user) throws Exception {
-		com.mongodb.MongoClient mongoClient = getMongoDb();
-		MongoDatabase db = mongoClient.getDatabase("annotananodb");
-		MongoCollection<Document> collection = db.getCollection("users");
-		Bson condition = new Document("$eq", user.getUserId());
-		Bson filter = new Document("userId", condition);
-		
-		Document document = collection.find(filter).first();
-		
-		if(document != null) {
-			Document update = new Document();
-			Bson dupdate = null;
-			update.append("userName", document.getString("userName"));
-			update.append("backgroundUrl", user.getBackgroundUrl());
-			update.append("pwd", document.getString("pwd"));
-			update.append("userId", document.getString("userId"));
-			dupdate = new Document("$set", update);
-			collection.updateOne(filter, dupdate);
-		} else {
-			throw new Exception("No user found with id: " + user.getUserId());
-		}
-		mongoClient.close();
-		return user;
-		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -125,7 +93,6 @@ public class AnnotananoApiApplication {
         	game.setLogo(d.getString("logo"));
         	game.setRating(d.getInteger("rating"));
         	game.setCol(d.getBoolean("col"));
-        	game.setIdGame(d.getInteger("idGame"));
         	
         	if(d.get("collection") != null) {
         		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -219,7 +186,6 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
-						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -318,7 +284,6 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
-						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -426,7 +391,6 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
-	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -519,7 +483,6 @@ public class AnnotananoApiApplication {
 			            	game.setLogo(d.getString("logo"));
 			            	game.setRating(d.getInteger("rating"));
 			            	game.setCol(d.getBoolean("col"));
-			            	game.setIdGame(d.getInteger("idGame"));
 			            	
 			            	if(d.get("collection") != null) {
 			            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -536,6 +499,7 @@ public class AnnotananoApiApplication {
 			            	//userGames.add(game);
 			            	if(gameGoldbook.get(year+"_list") == null) {
 			            		List<Game> userGames = new ArrayList<Game>();
+			            		userGames.add(game);
 			            		gameGoldbook.put(year+"_list", userGames);
 			            	} else {
 			            		gameGoldbook.get(year+"_list").add(game);
@@ -558,6 +522,7 @@ public class AnnotananoApiApplication {
 			            	movie.setPlatform(d.getString("platform"));
 			            	if(movieGoldbook.get(year+"_movies_list") == null) {
 			            		List<Movie> userMovies = new ArrayList<Movie>();
+			            		userMovies.add(movie);
 			            		movieGoldbook.put(year+"_movies_list", userMovies);
 			            	} else {
 			            		movieGoldbook.get(year+"_movies_list").add(movie);
@@ -579,6 +544,7 @@ public class AnnotananoApiApplication {
 			            	serie.setPlatform(d.getString("platform"));
 			            	if(seriesGoldbook.get(year+"_series_list") == null) {
 			            		List<TvSeries> userSeries = new ArrayList<TvSeries>();
+			            		userSeries.add(serie);
 			            		seriesGoldbook.put(year+"_series_list", userSeries);
 			            	} else {
 			            		seriesGoldbook.get(year+"_series_list").add(serie);
@@ -644,7 +610,6 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
-	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -664,37 +629,31 @@ public class AnnotananoApiApplication {
 	            
 	            List<Movie> userMovies = new ArrayList<Movie>();
 	            List<Document> listMoviesDoc = (List<Document>)document.get("moviesThisYear");
-	            if(listMoviesDoc != null) {
-	            	 listMoviesDoc.forEach((Document d) -> {
-	 	            	Movie movie = new Movie();
-	 	            	movie.setName(d.getString("name"));
-	 	            	movie.setId(d.getString("id"));
-	 	            	movie.setComment(d.getString("comment"));
-	 	            	movie.setUrl(d.getString("url"));
-	 	            	movie.setRating(d.getInteger("rating"));
-	 	            	movie.setPlatform(d.getString("platform"));
-	 	            	userMovies.add(movie);
-	 	            });
-	 	            user.setMoviesThisYear(userMovies);
-	            }
-	           
+	            listMoviesDoc.forEach((Document d) -> {
+	            	Movie movie = new Movie();
+	            	movie.setName(d.getString("name"));
+	            	movie.setId(d.getString("id"));
+	            	movie.setComment(d.getString("comment"));
+	            	movie.setUrl(d.getString("url"));
+	            	movie.setRating(d.getInteger("rating"));
+	            	movie.setPlatform(d.getString("platform"));
+	            	userMovies.add(movie);
+	            });
+	            user.setMoviesThisYear(userMovies);
 	            
 	            List<TvSeries> userSeries = new ArrayList<TvSeries>();
 	            List<Document> listSeriesDoc = (List<Document>)document.get("seriesThisYear");
-	            if(listSeriesDoc != null) {
-	            	listSeriesDoc.forEach((Document d) -> {
-		            	TvSeries serie = new TvSeries();
-		            	serie.setName(d.getString("name"));
-		            	serie.setId(d.getString("id"));
-		            	serie.setComment(d.getString("comment"));
-		            	serie.setUrl(d.getString("url"));
-		            	serie.setRating(d.getInteger("rating"));
-		            	serie.setPlatform(d.getString("platform"));
-		            	userSeries.add(serie);
-		            });
-		            user.setSeriesThisYear(userSeries);
-	            }
-	            
+	            listSeriesDoc.forEach((Document d) -> {
+	            	TvSeries serie = new TvSeries();
+	            	serie.setName(d.getString("name"));
+	            	serie.setId(d.getString("id"));
+	            	serie.setComment(d.getString("comment"));
+	            	serie.setUrl(d.getString("url"));
+	            	serie.setRating(d.getInteger("rating"));
+	            	serie.setPlatform(d.getString("platform"));
+	            	userSeries.add(serie);
+	            });
+	            user.setSeriesThisYear(userSeries);
 	            uGames.add(user);
 	        }
 	   });
@@ -705,25 +664,8 @@ public class AnnotananoApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnnotananoApiApplication.class, args);
-		//gameApiKey = getGameApiKey();
-		
 	}
 	
-	private static String getGameApiKey() {
-		MongoClient mongoClient = getMongoDb();
-		MongoDatabase db = mongoClient.getDatabase("annotananodb");
-		MongoCollection<Document> collection = db.getCollection("gamers");
-		FindIterable<Document> cursor = collection.find();
-		cursor.forEach(new Block<Document>() {
-	        @Override
-	        public void apply(final Document document) {
-	        	gameApiKey = document.getString("game_api_key");
-	        }
-	   });
-		mongoClient.close();
-		return null;
-	}
-
 	private static Integer getValueFromJson(String key, String json) {
 		Pattern p = Pattern.compile("\""+key+"\":(\\d+)");
 		Matcher m = p.matcher(json);
@@ -740,7 +682,7 @@ public class AnnotananoApiApplication {
 		return json;
 	}
 	
-	private static com.mongodb.MongoClient getMongoDb() {
+	private com.mongodb.MongoClient getMongoDb() {
 		MongoClientURI uri = new MongoClientURI(
 			    "mongodb+srv://lokad90:mongodb@cluster0-biuot.mongodb.net/test?retryWrites=true&w=majority");
 			
