@@ -93,6 +93,7 @@ public class AnnotananoApiApplication {
         	game.setLogo(d.getString("logo"));
         	game.setRating(d.getInteger("rating"));
         	game.setCol(d.getBoolean("col"));
+        	game.setIdGame(d.getInteger("idGame"));
         	
         	if(d.get("collection") != null) {
         		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -186,6 +187,7 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
+						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -284,6 +286,7 @@ public class AnnotananoApiApplication {
 						gameDocument.append("logo", game.getLogo());
 						gameDocument.append("rating", game.getRating());
 						gameDocument.append("col", game.getCol());
+						gameDocument.append("idGame", game.getIdGame());
 						
 						if(game.getCollection() != null && !game.getCollection().isEmpty()) {
 							List<Document> documentListCollection = new ArrayList<Document>();
@@ -391,6 +394,7 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
+	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -483,6 +487,7 @@ public class AnnotananoApiApplication {
 			            	game.setLogo(d.getString("logo"));
 			            	game.setRating(d.getInteger("rating"));
 			            	game.setCol(d.getBoolean("col"));
+			            	game.setIdGame(d.getInteger("idGame"));
 			            	
 			            	if(d.get("collection") != null) {
 			            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
@@ -610,6 +615,7 @@ public class AnnotananoApiApplication {
 	            	game.setLogo(d.getString("logo"));
 	            	game.setRating(d.getInteger("rating"));
 	            	game.setCol(d.getBoolean("col"));
+	            	game.setIdGame(d.getInteger("idGame"));
 	            	
 	            	if(d.get("collection") != null) {
 	            		List<Document> listGamesCollection = (List<Document>)d.get("collection");
